@@ -1,6 +1,3 @@
--- Minimal pure Lua JSON encoder/decoder
--- Only supports basic tables, strings, numbers, booleans, and nil
-
 local json = {}
 
 function json.encode(val)
@@ -36,7 +33,6 @@ function json.encode(val)
 end
 
 function json.decode(str)
-  -- For simplicity, use load() to parse JSON (works for trusted input)
   local f, err = load("return " .. str, "json", "t", {})
   if not f then error("Invalid JSON: " .. err) end
   return f()
