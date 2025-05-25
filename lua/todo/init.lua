@@ -5,6 +5,6 @@ M.setup = function()
     require('todo.todo').load_todo()
 end
 
-return M {
+return {
     setup = M.setup,
 }
