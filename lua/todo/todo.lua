@@ -27,8 +27,6 @@ function M.save_todo()
     end
 end
 
-load_todo()
-
 function M.add_task(task_text)
     if not task_text or #task_text == 0 then
         print("Invalid input. Please enter a valid task.")
