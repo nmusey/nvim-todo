@@ -6,7 +6,7 @@ local function register_commands()
     vim.api.nvim_create_user_command('TodoDelete', todo.delete_task, { desc = 'Delete a task' })
     vim.api.nvim_create_user_command('TodoEdit', todo.edit_task, { desc = 'Edit a task' })
     vim.api.nvim_create_user_command('TodoPrioritize', todo.prioritize_task, { desc = 'Prioritize a task' })
-    vim.api.nvim_create_user_command('Todotodo.nu', M.todo_menu, { desc = 'Open the todo menu' })
+    vim.api.nvim_create_user_command('TodoMenu', todo.todo_menu, { desc = 'Open the todo menu' })
 end
 
 return {
