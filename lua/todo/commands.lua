@@ -7,7 +7,7 @@ local function register_commands()
             print("Usage: TodoAdd <task_text>")
             return
         end
-        M.add_task(table.concat(args, " "))
+        todo.add_task(table.concat(args, " "))
     end, { nargs = "*", desc = 'Add a new todo task' })
 
     vim.api.nvim_create_user_command('TodoList', todo.view_todo_list, { desc = 'View the list of tasks' })
