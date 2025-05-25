@@ -29,8 +29,11 @@ end
 
 function M.add_task(task_text)
     if not task_text or #task_text == 0 then
-        print("Invalid input. Please enter a valid task.")
-        return
+        task_text = vim.ui.input({ prompt = "Enter task text: " })
+        if not task_text or #task_text == 0 then
+            print("Task text cannot be empty.")
+            return
+        end
     end
     
     for _, task in ipairs(todo) do
@@ -71,10 +74,12 @@ function M.view_todo_list()
 end
 
 function M.finish_task(task_id)
-    task_id = tonumber(task_id)
     if not task_id or task_id < 1 or task_id > #todo then
-        print("Invalid task ID.")
-        return
+        task_id = vim.ui.input({ prompt = "Enter task ID: " })
+        if not task_id or task_id < 1 or task_id > #todo then
+            print("Invalid task ID.")
+            return
+        end
     end
     
     todo[task_id].completed = true
@@ -83,10 +88,12 @@ function M.finish_task(task_id)
 end
 
 function M.delete_task(task_id)
-    task_id = tonumber(task_id)
     if not task_id or task_id < 1 or task_id > #todo then
-        print("Invalid task ID.")
-        return
+        task_id = vim.ui.input({ prompt = "Enter task ID: " })
+        if not task_id or task_id < 1 or task_id > #todo then
+            print("Invalid task ID.")
+            return
+        end
     end
     
     local deleted_task = todo[task_id].text
@@ -96,15 +103,20 @@ function M.delete_task(task_id)
 end
 
 function M.edit_task(task_id, new_text)
-    task_id = tonumber(task_id)
     if not task_id or task_id < 1 or task_id > #todo then
-        print("Invalid task ID.")
-        return
+        task_id = vim.ui.input({ prompt = "Enter task ID: " })
+        if not task_id or task_id < 1 or task_id > #todo then
+            print("Invalid task ID.")
+            return
+        end
     end
     
     if not new_text or #new_text == 0 then
-        print("Invalid input. Please enter valid task text.")
-        return
+        new_text = vim.ui.input({ prompt = "Enter new task text: " })
+        if not new_text or #new_text == 0 then
+            print("New task text cannot be empty.")
+            return
+        end
     end
     
     local old_text = todo[task_id].text
@@ -114,28 +126,31 @@ function M.edit_task(task_id, new_text)
 end
 
 function M.prioritize_task(task_id, priority)
-    task_id = tonumber(task_id)
-    priority = tonumber(priority)
-    
     if not task_id or task_id < 1 or task_id > #todo then
-        print("Invalid task ID.")
-        return
+        task_id = vim.ui.input({ prompt = "Enter task ID: " })
+        if not task_id or task_id < 1 or task_id > #todo then
+            print("Invalid task ID.")
+            return
+        end
     end
     
     if not priority or priority < 1 or priority > 3 then
-        print("Invalid priority. Please use a number between 1 and 3.")
-        return
+        priority = vim.ui.input({ prompt = "Enter new priority (1-3): " })
+        if not priority or priority < 1 or priority > 3 then
+            print("Invalid priority. Please use a number between 1 and 3.")
+            return
+        end
     end
     
-    todo[task_id].priority = priority
+    todo[task_id].priority = tonumber(priority)
    M.save_todo()
-    print(string.format("Task priority updated: %s (Priority: %d)", todo[task_id].text, priority))
+    print(string.format("Task priority updated: %s (Priority: %d)", todo[task_id].text, tonumber(priority)))
 end
 
 function M.todo_menu()
     vim.api.nvim_create_user_command('TodoAdd', function(opts)
         M.add_task(opts.args)
-    end, { nargs = 1, desc = 'Add a new todo task' })
+    end, { nargs = "*", desc = 'Add a new todo task' })
     
     vim.api.nvim_create_user_command('TodoList', function()
         M.view_todo_list()
@@ -143,11 +158,11 @@ function M.todo_menu()
     
     vim.api.nvim_create_user_command('TodoFinish', function(opts)
         M.finish_task(opts.args)
-    end, { nargs = 1, desc = 'Mark a task as completed' })
+    end, { nargs = "*", desc = 'Mark a task as completed' })
     
     vim.api.nvim_create_user_command('TodoDelete', function(opts)
         M.delete_task(opts.args)
-    end, { nargs = 1, desc = 'Delete a task' })
+    end, { nargs = "*", desc = 'Delete a task' })
     
     vim.api.nvim_create_user_command('TodoEdit', function(opts)
         local args = vim.split(opts.args, " ", { plain = true })
@@ -156,7 +171,7 @@ function M.todo_menu()
             return
         end
         M.edit_task(args[1], args[2])
-    end, { nargs = 1, desc = 'Edit a task' })
+    end, { nargs = "*", desc = 'Edit a task' })
     
     vim.api.nvim_create_user_command('TodoPriority', function(opts)
         local args = vim.split(opts.args, " ", { plain = true })
@@ -165,7 +180,7 @@ function M.todo_menu()
             return
         end
         M.prioritize_task(args[1], args[2])
-    end, { nargs = 1, desc = 'Set task priority (1-3)' })
+    end, { nargs = "*", desc = 'Set task priority (1-3)' })
 end
 
 function M.setup()
@@ -174,4 +189,3 @@ function M.setup()
 end
 
 return M
-
