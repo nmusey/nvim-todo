@@ -171,7 +171,7 @@ function M.todo_menu()
 end
 
 function M.setup()
-    load_todo()
+    M.load_todo()
     M.todo_menu()
 end
 
