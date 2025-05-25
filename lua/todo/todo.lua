@@ -46,7 +46,7 @@ function M.add_task(task_text)
         priority = 1,
         created_at = os.time()
     })
-    save_todo()
+   M.save_todo()
     print("Task added: " .. task_text)
 end
 
@@ -78,7 +78,7 @@ function M.finish_task(task_id)
     end
     
     todo[task_id].completed = true
-    save_todo()
+   M.save_todo()
     print("Task marked as completed: " .. todo[task_id].text)
 end
 
@@ -91,7 +91,7 @@ function M.delete_task(task_id)
     
     local deleted_task = todo[task_id].text
     table.remove(todo, task_id)
-    save_todo()
+   M.save_todo()
     print("Task deleted: " .. deleted_task)
 end
 
@@ -109,7 +109,7 @@ function M.edit_task(task_id, new_text)
     
     local old_text = todo[task_id].text
     todo[task_id].text = new_text
-    save_todo()
+   M.save_todo()
     print(string.format("Task edited: '%s' -> '%s'", old_text, new_text))
 end
 
@@ -128,7 +128,7 @@ function M.prioritize_task(task_id, priority)
     end
     
     todo[task_id].priority = priority
-    save_todo()
+   M.save_todo()
     print(string.format("Task priority updated: %s (Priority: %d)", todo[task_id].text, priority))
 end
 
