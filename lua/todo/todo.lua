@@ -5,7 +5,7 @@ local json = require('todo.json')
 local TODO_FILE = os.getenv("HOME") .. "/.local/nvim_todo.json"
 local todo = {}
 
-local function load_todo()
+function M.load_todo()
     local f = io.open(TODO_FILE, "r")
     if f then
         local content = f:read("*a")
@@ -19,7 +19,7 @@ local function load_todo()
     end
 end
 
-local function save_todo()
+function M.save_todo()
     local f = io.open(TODO_FILE, "w")
     if f then
         f:write(json.encode(todo))
