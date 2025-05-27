@@ -50,7 +50,7 @@ end
 
 local function register_commands()
     vim.api.nvim_create_user_command('TodoAdd', function(opts)
-        if opts.args then
+        if opts.args and #opts.args > 0 then
             todo.add_task(opts.args)
         else
             add_task_prompt()
@@ -62,7 +62,7 @@ local function register_commands()
     end, { desc = 'View the list of tasks' })
 
     vim.api.nvim_create_user_command('TodoFinish', function(opts)
-        if opts.args then
+        if opts.args and #opts.args > 0 then
             todo.finish_task(opts.args)
         else
             finish_task_prompt()
@@ -70,7 +70,7 @@ local function register_commands()
     end, { nargs = "?", desc = 'Mark a task as finished' })
 
     vim.api.nvim_create_user_command('TodoDelete', function(opts)
-        if opts.args then
+        if opts.args and #opts.args > 0 then
             todo.delete_task(opts.args)
         else
             delete_task_prompt()
