@@ -107,12 +107,12 @@ local function register_commands()
 
     vim.api.nvim_create_user_command('TodoMenu', function()
         local choices = {
-            ["Add Task"] = add_task_prompt(),
-            ["View List"] = function() todo.view_todo_list() end,
-            ["Finish Task"] = function() finish_task_prompt() end,
-            ["Delete Task"] = function() delete_task_prompt() end,
-            ["Edit Task"] = function() edit_task_prompt() end,
-            ["Prioritize Task"] = function() prioritize_task_prompt() end
+            ["Add Task"] = add_task_prompt,
+            ["View List"] = todo.view_todo_list,
+            ["Finish Task"] = finish_task_prompt,
+            ["Delete Task"] = delete_task_prompt,
+            ["Edit Task"] = edit_task_prompt,
+            ["Prioritize Task"] = prioritize_task_prompt
         }
 
         vim.ui.select(choices, { prompt = "Select an option: " }, function(choice)
