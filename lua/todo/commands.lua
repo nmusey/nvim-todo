@@ -10,7 +10,13 @@ end
 
 local function add_task_prompt()
     local task_text
-    vim.ui.input({ prompt = "Enter task text: " }, function(st) task_text = get_text(st) end)
+    vim.ui.input(
+        { prompt = "Enter task text: " }, 
+        function(input) 
+            if input then task_text = input end 
+        end
+    )
+
     if task_text and #task_text > 0 then
         todo.add_task(task_text)
     else
