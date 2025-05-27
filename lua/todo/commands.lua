@@ -1,8 +1,16 @@
 local todo = require('todo.todo')
 
+local function get_text(str)
+    if str then
+        return str
+    else
+        return nil
+    end
+end
+
 local function add_task_prompt()
     local task_text
-    vim.ui.input({ prompt = "Enter task text: " }, function(str) if str then task_text = str end end)
+    vim.ui.input({ prompt = "Enter task text: " }, function(st) task_text = get_text(st) end)
     if task_text and #task_text > 0 then
         todo.add_task(task_text)
     else
