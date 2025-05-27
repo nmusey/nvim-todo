@@ -2,7 +2,7 @@ local todo = require('todo.todo')
 
 local function add_task_prompt()
     local task_text
-    vim.ui.input({ prompt = "Enter task text: " }, function(str) task_text = str end)
+    vim.ui.input({ prompt = "Enter task text: " }, function(str) if str then task_text = str end end)
     if task_text and #task_text > 0 then
         todo.add_task(task_text)
     else
@@ -12,7 +12,7 @@ end
 
 local function finish_task_prompt()
     local task_id
-    vim.ui.input({ prompt = "Enter task ID: " }, function (str) task_id = str end)
+    vim.ui.input({ prompt = "Enter task ID: " }, function (str) if str then task_id = str end end)
     if task_id and #task_id > 0 then
         todo.finish_task(task_id)
     else
@@ -21,7 +21,8 @@ local function finish_task_prompt()
 end
 
 local function delete_task_prompt()
-    local task_id = vim.ui.input({ prompt = "Enter task ID: " })
+    local task_id 
+    vim.ui.input({ prompt = "Enter task ID: " }, function (str) if str then task_id = str end end)
     if task_id and #task_id > 0 then
         todo.delete_task(task_id)
     else
