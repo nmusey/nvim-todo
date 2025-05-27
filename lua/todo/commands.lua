@@ -9,19 +9,16 @@ local function get_text(str)
 end
 
 local function add_task_prompt()
-    local task_text
-    vim.ui.input(
-        { prompt = "Enter task text: " }, 
-        function(input) 
-            if input then task_text = input end 
+    vim.ui.input({ prompt = "Enter task text: " }, 
+        function(text) 
+            if text and #text > 0 then
+                todo.add_task(text)
+            else
+                print("Task text cannot be empty.")
+            end
         end
     )
 
-    if task_text and #task_text > 0 then
-        todo.add_task(task_text)
-    else
-        print("Task text cannot be empty.")
-    end
 end
 
 local function finish_task_prompt()
