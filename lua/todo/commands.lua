@@ -17,7 +17,7 @@ local function finish_task_prompt()
         else
             print("Task ID cannot be empty.")
         end
-    end
+    end)
 end
 
 local function delete_task_prompt()
@@ -27,7 +27,7 @@ local function delete_task_prompt()
         else
             print("Task ID cannot be empty.")
         end
-    end
+    end)
 end
 
 local function edit_task_prompt()
