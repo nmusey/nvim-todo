@@ -11,22 +11,22 @@ local function add_task_prompt()
 end
 
 local function finish_task_prompt()
-    local task_id
-    vim.ui.input({ prompt = "Enter task ID: " }, function (str) if str then task_id = str end end)
-    if task_id and #task_id > 0 then
-        todo.finish_task(task_id)
-    else
-        print("Task ID cannot be empty.")
+    vim.ui.input({ prompt = "Enter task ID: " }, function (task_id) 
+        if task_id and #task_id > 0 then
+            todo.finish_task(task_id)
+        else
+            print("Task ID cannot be empty.")
+        end
     end
 end
 
 local function delete_task_prompt()
-    local task_id 
-    vim.ui.input({ prompt = "Enter task ID: " }, function (str) if str then task_id = str end end)
-    if task_id and #task_id > 0 then
-        todo.delete_task(task_id)
-    else
-        print("Task ID cannot be empty.")
+    vim.ui.input({ prompt = "Enter task ID: " }, function (task_id)
+        if task_id and #task_id > 0 then
+            todo.delete_task(task_id)
+        else
+            print("Task ID cannot be empty.")
+        end
     end
 end
 
