@@ -1,24 +1,13 @@
 local todo = require('todo.todo')
 
-local function get_text(str)
-    if str then
-        return str
-    else
-        return nil
-    end
-end
-
 local function add_task_prompt()
-    vim.ui.input({ prompt = "Enter task text: " }, 
-        function(text) 
-            if text and #text > 0 then
-                todo.add_task(text)
-            else
-                print("Task text cannot be empty.")
-            end
+    vim.ui.input({ prompt = "Enter task text: " }, function(text) 
+        if text and #text > 0 then
+            todo.add_task(text)
+        else
+            print("Task text cannot be empty.")
         end
-    )
-
+    end)
 end
 
 local function finish_task_prompt()
@@ -60,7 +49,6 @@ local function prioritize_task_prompt()
 end
 
 local function register_commands()
-
     vim.api.nvim_create_user_command('TodoAdd', function(opts)
         if opts.args then
             todo.add_task(opts.args)
