@@ -28,14 +28,6 @@ function M.save_todo()
 end
 
 function M.add_task(task_text)
-    if not task_text or #task_text == 0 then
-        task_text = vim.ui.input({ prompt = "Enter task text: " })
-        if not task_text or #task_text == 0 then
-            print("Task text cannot be empty.")
-            return
-        end
-    end
-    
     for _, task in ipairs(todo) do
         if task.text == task_text then
             print("Task already exists.")
@@ -74,28 +66,12 @@ function M.view_todo_list()
 end
 
 function M.finish_task(task_id)
-    if not task_id or task_id < 1 or task_id > #todo then
-        task_id = vim.ui.input({ prompt = "Enter task ID: " })
-        if not task_id or task_id < 1 or task_id > #todo then
-            print("Invalid task ID.")
-            return
-        end
-    end
-    
     todo[task_id].completed = true
    M.save_todo()
     print("Task marked as completed: " .. todo[task_id].text)
 end
 
 function M.delete_task(task_id)
-    if not task_id or task_id < 1 or task_id > #todo then
-        task_id = vim.ui.input({ prompt = "Enter task ID: " })
-        if not task_id or task_id < 1 or task_id > #todo then
-            print("Invalid task ID.")
-            return
-        end
-    end
-    
     local deleted_task = todo[task_id].text
     table.remove(todo, task_id)
    M.save_todo()
@@ -103,22 +79,6 @@ function M.delete_task(task_id)
 end
 
 function M.edit_task(task_id, new_text)
-    if not task_id or task_id < 1 or task_id > #todo then
-        task_id = vim.ui.input({ prompt = "Enter task ID: " })
-        if not task_id or task_id < 1 or task_id > #todo then
-            print("Invalid task ID.")
-            return
-        end
-    end
-    
-    if not new_text or #new_text == 0 then
-        new_text = vim.ui.input({ prompt = "Enter new task text: " })
-        if not new_text or #new_text == 0 then
-            print("New task text cannot be empty.")
-            return
-        end
-    end
-    
     local old_text = todo[task_id].text
     todo[task_id].text = new_text
    M.save_todo()
@@ -126,66 +86,9 @@ function M.edit_task(task_id, new_text)
 end
 
 function M.prioritize_task(task_id, priority)
-    if not task_id or task_id < 1 or task_id > #todo then
-        task_id = vim.ui.input({ prompt = "Enter task ID: " })
-        if not task_id or task_id < 1 or task_id > #todo then
-            print("Invalid task ID.")
-            return
-        end
-    end
-    
-    if not priority or priority < 1 or priority > 3 then
-        priority = vim.ui.input({ prompt = "Enter new priority (1-3): " })
-        if not priority or priority < 1 or priority > 3 then
-            print("Invalid priority. Please use a number between 1 and 3.")
-            return
-        end
-    end
-    
     todo[task_id].priority = tonumber(priority)
    M.save_todo()
     print(string.format("Task priority updated: %s (Priority: %d)", todo[task_id].text, tonumber(priority)))
-end
-
-function M.todo_menu()
-    vim.api.nvim_create_user_command('TodoAdd', function(opts)
-        M.add_task(opts.args)
-    end, { nargs = "*", desc = 'Add a new todo task' })
-    
-    vim.api.nvim_create_user_command('TodoList', function()
-        M.view_todo_list()
-    end, { desc = 'View todo list' })
-    
-    vim.api.nvim_create_user_command('TodoFinish', function(opts)
-        M.finish_task(opts.args)
-    end, { nargs = "*", desc = 'Mark a task as completed' })
-    
-    vim.api.nvim_create_user_command('TodoDelete', function(opts)
-        M.delete_task(opts.args)
-    end, { nargs = "*", desc = 'Delete a task' })
-    
-    vim.api.nvim_create_user_command('TodoEdit', function(opts)
-        local args = vim.split(opts.args, " ", { plain = true })
-        if #args ~= 2 then
-            print("Usage: TodoEdit <task_id> <new_text>")
-            return
-        end
-        M.edit_task(args[1], args[2])
-    end, { nargs = "*", desc = 'Edit a task' })
-    
-    vim.api.nvim_create_user_command('TodoPriority', function(opts)
-        local args = vim.split(opts.args, " ", { plain = true })
-        if #args ~= 2 then
-            print("Usage: TodoPriority <task_id> <priority>")
-            return
-        end
-        M.prioritize_task(args[1], args[2])
-    end, { nargs = "*", desc = 'Set task priority (1-3)' })
-end
-
-function M.setup()
-    M.load_todo()
-    M.todo_menu()
 end
 
 return M
